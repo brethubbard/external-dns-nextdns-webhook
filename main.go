@@ -51,13 +51,13 @@ func allLogLevelsAsStrings() []string {
 }
 
 func (cfg *Config) ParseFlags(args []string) error {
-	app := kingpin.New("external-dns-nextdns-webhook", "A webhook for ExternalDNS to sync records with NextDNS.\n\nNote that all flags may be replaced with env vars - `--flag` -> `EXTERNAL_DNS_FLAG=1` or `--flag value` -> `EXTERNAL_DNS_FLAG=value`")
+	app := kingpin.New("nextdns-webhook", "A webhook for ExternalDNS to sync records with NextDNS.\n\nNote that all flags may be replaced with env vars - `--flag` -> `NEXTDNS_WEBHOOK_FLAG=1` or `--flag value` -> NEXTDNS_WEBHOOK_FLAG=value`")
 	app.Version(Version)
 	app.DefaultEnvars()
 
 	app.Flag("domain-filter", "Limit possible target zones by a domain suffix; specify multiple times for multiple domains (optional)").Default("").StringsVar(&cfg.DomainFilter)
-	app.Flag("nextdns-api-key", "When using the NextDNS provider, specify the API key for your NextDNS account").Default(defaultConfig.NextDNSAPIKey).StringVar(&cfg.NextDNSAPIKey)
-	app.Flag("nextdns-profile-id", "When using the NextDNS provider, specify the profile id you want external dns to sync").Default(defaultConfig.NextDNSProfileId).StringVar(&cfg.NextDNSProfileId)
+	app.Flag("api-key", "When using the NextDNS provider, specify the API key for your NextDNS account").Default(defaultConfig.NextDNSAPIKey).StringVar(&cfg.NextDNSAPIKey)
+	app.Flag("profile-id", "When using the NextDNS provider, specify the profile id you want external dns to sync").Default(defaultConfig.NextDNSProfileId).StringVar(&cfg.NextDNSProfileId)
 	app.Flag("log-format", "The format in which log messages are printed (default: text, options: text, json)").Default(defaultConfig.LogFormat).EnumVar(&cfg.LogFormat, "text", "json")
 	app.Flag("dry-run", "When enabled, prints DNS record changes rather than actually performing them (default: disabled)").BoolVar(&cfg.DryRun)
 	app.Flag("log-level", "Set the level of logging. (default: info, options: panic, debug, info, warning, error, fatal").Default(defaultConfig.LogLevel).EnumVar(&cfg.LogLevel, allLogLevelsAsStrings()...)
