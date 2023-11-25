@@ -9,6 +9,7 @@
 
 # But not these files...
 !/.gitignore
+!/.github/**/*
 
 !*.go
 !go.sum
