@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/alecthomas/kingpin"
@@ -104,6 +106,15 @@ func main() {
 		log.Fatalf("failed to create NextDNS provider: %v", err)
 	}
 
-	webhook.StartHTTPApi(dnsProvider, make(chan struct{}), cfg.WebhookProviderReadTimeout, cfg.WebhookProviderWriteTimeout, "127.0.0.1:8888")
+	startedChan := make(chan struct{})
+	webhook.StartHTTPApi(dnsProvider, startedChan, cfg.WebhookProviderReadTimeout, cfg.WebhookProviderWriteTimeout, "127.0.0.1:8888")
+
+	<-startedChan
+
+	exitSignal := make(chan os.Signal, 1)
+	signal.Notify(exitSignal, syscall.SIGINT, syscall.SIGTERM)
+	signal := <-exitSignal
+
+	log.Infof("Signal %s received. Shutting down the webhook.", signal.String())
 
 }
