@@ -107,7 +107,7 @@ func main() {
 	}
 
 	startedChan := make(chan struct{})
-	webhook.StartHTTPApi(dnsProvider, startedChan, cfg.WebhookProviderReadTimeout, cfg.WebhookProviderWriteTimeout, "127.0.0.1:8888")
+	go webhook.StartHTTPApi(dnsProvider, startedChan, cfg.WebhookProviderReadTimeout, cfg.WebhookProviderWriteTimeout, "127.0.0.1:8888")
 
 	<-startedChan
 
