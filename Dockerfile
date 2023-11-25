@@ -17,8 +17,6 @@ COPY --from=builder /external-dns-nextdns-webhook /external-dns-nextdns-webhook
 
 EXPOSE 8888
 
-USER nonroot:nonroot
-
 ENTRYPOINT ["/external-dns-nextdns-webhook"]
 
 LABEL org.opencontainers.image.title="ExternalDNS NextDNS webhook Docker Image" \
