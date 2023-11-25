@@ -100,5 +100,10 @@ func main() {
 		DomainFilter:     endpoint.NewDomainFilter(cfg.DomainFilter),
 	})
 
+	if err != nil {
+		log.Fatalf("failed to create NextDNS provider: %v", err)
+	}
+
 	webhook.StartHTTPApi(dnsProvider, make(chan struct{}), cfg.WebhookProviderReadTimeout, cfg.WebhookProviderWriteTimeout, "127.0.0.1:8888")
+
 }
